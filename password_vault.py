@@ -2,8 +2,9 @@ import hashlib
 import sqlite3
 from functools import partial
 from tkinter import *
-from tkinter import simpledialog
-from tkinter import ttk
+from tkinter import messagebox, simpledialog, ttk
+import smtplib
+import random
 
 from password_generator import passGenerator
 
@@ -112,7 +113,7 @@ def loginScreen():
         password = getMasterPassword()
 
         if password:
-            vaultScreen()
+            otp_ver()
 
         else:
             txt.delete(0, 'end')
@@ -120,6 +121,46 @@ def loginScreen():
 
     btn = Button(window, text="Submit", command=checkPassword)
     btn.pack(pady=5)
+
+# OTP VERIFICATION.
+    def otp_ver():
+        otp = random.randint(1000, 9999)
+        otp = str(otp)
+
+        def send():
+            try:
+                s = smtplib.SMTP("smtp.gmail.com", 587)  # 587 is a port number
+                s.starttls()
+                s.login("krishnadembla708@gmail.com", "vaultaccount24")
+                s.sendmail("krishnadembla708@gmail.com", "krishnadembla2001@gmail.com", otp)
+                messagebox.showinfo("Send OTP via Email", f"OTP sent to your mail.")
+                s.quit()
+
+            except:
+                messagebox.showinfo("Send OTP via Email",
+                                    "Please enter the valid email address OR check an internet connection")
+
+        send()
+        root = Tk()
+        root.title("OTP Verification")
+        root.geometry("565x250")
+        email_label = Label(root, text="Enter OTP: ")
+        email_label.grid(row=0, column=0, padx=15, pady=60)
+        email_entry = Entry(root, width=25,)
+        email_entry.grid(row=0, column=1, padx=12, pady=60)
+        email_entry.focus()
+
+        def verify():
+            if email_entry.get() == otp:
+                root.destroy()
+                vaultScreen()
+            else:
+                messagebox.showinfo("Incorrect OTP", "Please check and rewrite.")
+
+        send_button = Button(root, text="Check OTP",command=verify)
+        send_button.place(x=210, y=150)
+        root.mainloop()
+
 
 #   Vault functionalities #######################################
 
@@ -188,10 +229,10 @@ def vaultScreen():
     lbl.grid(column=2)
 
     btn2 = Button(second_frame, text="Generate Password", command=passGenerator)
-    btn2.grid(column=2, pady=10)
+    btn2.grid(column=0, pady=10)
 
-    btn = Button(second_frame, text="Store New", command=addEntry)
-    btn.grid(column=4, pady=10)
+    btn = Button(second_frame, text="Add Credentials", command=addEntry)
+    btn.grid(row = 1,column=1, pady=10)
 
     lbl = Label(second_frame, text="Website")
     lbl.grid(row=2, column=0, padx=40)
@@ -216,7 +257,7 @@ def vaultScreen():
             lbl2.grid(column=1, row=i + 3)
             lbl3 = Label(second_frame, text=(array[i][3]))
             lbl3.grid(column=2, row=i + 3)
-            btn2 = Button(second_frame, text="Copy Acc", command=partial(copyAcc, array[i][2]))
+            btn2 = Button(second_frame, text="Copy User", command=partial(copyAcc, array[i][2]))
             btn2.grid(column=3, row=i + 3, pady=10)
             btn3 = Button(second_frame, text="Copy Pass", command=partial(copyPass, array[i][3]))
             btn3.grid(column=4, row=i + 3, pady=10)
