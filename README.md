@@ -2,7 +2,7 @@
 
 S- Vault is a personal Password Manager Tool, to store all your passwords at one place, password are encrypted by SHA-256 encryption.
 
-#Screenshots
+# Screenshots
 
 -- First Time Login Screen --
 
@@ -32,7 +32,7 @@ S- Vault is a personal Password Manager Tool, to store all your passwords at one
 
 ![Add_Credentials_3](https://user-images.githubusercontent.com/81406458/208378192-2f0467d7-a3b2-409a-ab1f-9f2f98d3dca4.png)
 
--- Main Vault Screen After Adding New Password --
+-- Main Vault Screen After Adding New Credentials --
 
 ![Vault_screen_after_new_password](https://user-images.githubusercontent.com/81406458/208378902-7202116c-28c2-4f2b-b4ca-252d9f4f168b.png)
 
